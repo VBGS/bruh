@@ -116,16 +116,19 @@ int main()
 
     while (true)
     {
-        if (r > 0 && b == 0)
-            --r, ++g;
+        for (unsigned n = 0; n < 50; ++n)
+        {
+            if (r > 0 && b == 0)
+                --r, ++g;
 
-        if (g > 0 && r == 0)
-            --g, ++b;
+            if (g > 0 && r == 0)
+                --g, ++b;
 
-        if (b > 0 && g == 0)
-            ++r, --b;
+            if (b > 0 && g == 0)
+                ++r, --b;
+        }
 
         print(h, w / 2);
-        usleep(15000);
+        usleep(500000);
     }
 }
