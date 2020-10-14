@@ -1,11 +1,17 @@
-#include <assert.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <termios.h>
 #include <unistd.h>
 
 #define Y 9
 #define X 21
+
+#define R "\e[38;2;128;16;16m"
+#define G "\e[38;2;16;128;16m"
+#define B "\e[38;2;16;16;128m"
+#define RESET "\e[0m"
 
 static bool const bruh[Y][X] = {
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -82,9 +88,21 @@ static void print(unsigned const h, unsigned const w)
     reset();
 }
 
+inline static void usage(char const *const prog_name)
+{
+    printf("Usage:\n    %s " R "<r> " G "<g>" B " <b>" RESET "\n", prog_name);
+    exit(EXIT_FAILURE);
+}
+
 int main(int const argc, char const *const argv[const])
 {
-    assert(argc == 4);
+    if (argc != 4)
+        usage(argv[0]);
+
+    for (size_t i = 1; i <= 3; ++i)
+        for (size_t j = 0; argv[i][j] != '\0'; ++j)
+            if (!isdigit(argv[i][j]))
+                usage(argv[0]);
 
     r = argv[1];
     g = argv[2];
