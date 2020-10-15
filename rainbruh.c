@@ -46,11 +46,6 @@ inline static void pixel()
     printf("  ");
 }
 
-inline static void clear()
-{
-    printf("\e[2J");
-}
-
 inline static void set_cursor(unsigned y, unsigned x)
 {
     printf("\e[%u;%uH", y, x);
@@ -58,7 +53,6 @@ inline static void set_cursor(unsigned y, unsigned x)
 
 static void print(unsigned const h, unsigned const w)
 {
-    clear();
     set_cursor(0, 0);
 
     bool bg = false;
@@ -84,7 +78,9 @@ static void print(unsigned const h, unsigned const w)
         }
 
         reset();
-        putchar('\n');
+
+        if (y != h - 1)
+            putchar('\n');
     }
 
     reset();
@@ -116,19 +112,16 @@ int main()
 
     while (true)
     {
-        for (unsigned n = 0; n < 50; ++n)
-        {
-            if (r > 0 && b == 0)
-                --r, ++g;
+        if (r > 0 && b == 0)
+            --r, ++g;
 
-            if (g > 0 && r == 0)
-                --g, ++b;
+        if (g > 0 && r == 0)
+            --g, ++b;
 
-            if (b > 0 && g == 0)
-                ++r, --b;
-        }
+        if (b > 0 && g == 0)
+            ++r, --b;
 
         print(h, w / 2);
-        usleep(500000);
+        usleep(15000);
     }
 }
